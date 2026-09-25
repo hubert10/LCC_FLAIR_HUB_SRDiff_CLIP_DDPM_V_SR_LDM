@@ -90,7 +90,7 @@ class Trainer:
 
         dataloader = self.datamodule._create_dataloader(
             dataset_train,
-            batch_size=hparams["batch_size"],
+            batch_size=hparams["hyperparams"]["batch_size"],
             shuffle=True,
             # num_workers=hparams["num_workers"],
             drop_last=True,
@@ -107,7 +107,7 @@ class Trainer:
         )
         dataloader = self.datamodule._create_dataloader(
             dataset_val,
-            batch_size=hparams["eval_batch_size"],
+            batch_size=hparams["hyperparams"]["eval_batch_size"],
             shuffle=False,
             # num_workers=hparams["num_workers"],
             drop_last=True,
@@ -125,7 +125,7 @@ class Trainer:
 
         dataloader = self.datamodule._create_dataloader(
             dataset_test,
-            batch_size=hparams["test_batch_size"],
+            batch_size=hparams["hyperparams"]["test_batch_size"],
             shuffle=False,
             # num_workers=hparams["num_workers"],
             drop_last=False,
