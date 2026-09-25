@@ -670,8 +670,8 @@ class SatUNet(ModelMixin, ConfigMixin, UNet2DConditionLoadersMixin):
         # Your custom projections remain trainable
         # ---------------------------------------------
 
-        self.lr_projs.requires_grad_(True)
-        self.hr_projs.requires_grad_(True)
+        # self.lr_projs.requires_grad_(True)
+        # self.hr_projs.requires_grad_(True)
 
         self._print_trainable_parameters()
 
