@@ -29,7 +29,6 @@ from diffusers.models.unet_2d_blocks import (
     get_up_block,
 )
 
-
 # Diffusers attention processors
 # ---------------------------------------------------------
 try:
@@ -560,7 +559,6 @@ class SatUNet(ModelMixin, ConfigMixin, UNet2DConditionLoadersMixin):
         )
         return upscaled
 
-
     def add_lora(self, rank=8, alpha=8):
 
         print(
@@ -702,7 +700,6 @@ class SatUNet(ModelMixin, ConfigMixin, UNet2DConditionLoadersMixin):
         )
 
         print("=" * 60)
-
 
     def forward(
         self,
@@ -976,8 +973,6 @@ class SatUNet(ModelMixin, ConfigMixin, UNet2DConditionLoadersMixin):
 
         # return UNet2DConditionOutput(sample=sample)
         return sample
-
-
 
 
 # This architecture combines three conditioning types:

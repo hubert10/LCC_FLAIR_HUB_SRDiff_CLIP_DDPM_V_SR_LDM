@@ -620,7 +620,7 @@ class LatentDiffusion(DDPM):
             if "attn" not in name:
                 param.requires_grad = False
             else:
-                param.requires_grad = True
+                param.requires_grad = False
 
         self.first_stage_model.eval()
         self.first_stage_model.train = disabled_train
