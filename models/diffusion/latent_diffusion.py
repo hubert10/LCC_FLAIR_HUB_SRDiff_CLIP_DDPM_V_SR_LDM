@@ -636,7 +636,7 @@ class LatentDiffusion(DDPM):
             if "attn" not in name:
                 param.requires_grad = False
             else:
-                param.requires_grad = True
+                param.requires_grad = False
 
         # Setup the CLIP model - use pretrained weights
         self.cond_stage_model = FrozenOpenCLIPEmbedder(hparams)

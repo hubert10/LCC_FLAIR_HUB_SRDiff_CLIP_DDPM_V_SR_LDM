@@ -6,3 +6,7 @@ ssh -v -i /home/kanyamahanga/.ssh/Hubert2.pem eouser@74.63.0.58
 
 
 scp -i /home/kanyamahanga/.ssh/Hubert-EoLab.pem eouser@74.63.0.58:/home/eouser/exp_2025/Results/MISR_JOINT_LDM_LCC_BASE_16_INIT_LR_ENC_HR_INFER_EOLAB/results/checkpoints/misr/srdiff_highresnet_ltae_ckpt/model_ckpt_steps_150000.ckpt ./
+
+
+
+sudo sshfs eouser@74.63.7.39:/hubert_storage /hubert_storage   -o _netdev,user,idmap=user,allow_other,default_permissions,uid=1000,gid=1000,IdentityFile=/home/eouser/.ssh/eolab_private,umask=000
