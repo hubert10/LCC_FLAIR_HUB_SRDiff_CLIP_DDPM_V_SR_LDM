@@ -29,24 +29,6 @@ from diffusers.models.unet_2d_blocks import (
     get_up_block,
 )
 
-
-# Diffusers attention processors
-# ---------------------------------------------------------
-try:
-    # Older Diffusers versions
-    from diffusers.models.attention_processor import (
-        LoRAAttnProcessor,
-        LoRAAttnProcessor2_0,
-        AttnProcessor,
-    )
-except ImportError:
-    from diffusers.models.attention_processor import (
-        LoRAAttnProcessor,
-        LoRAAttnProcessor2_0,
-        AttnProcessor,
-    )
-
-
 logger = logging.get_logger(__name__)  # pylint: disable=invalid-name
 
 
@@ -560,150 +542,6 @@ class SatUNet(ModelMixin, ConfigMixin, UNet2DConditionLoadersMixin):
         )
         return upscaled
 
-
-    def add_lora(self, rank=8, alpha=8):
-
-        print(
-            f"Adding LoRA adapters: rank={rank}, alpha={alpha}"
-        )
-
-        lora_attn_procs = {}
-
-        for name in self.attn_processors.keys():
-
-            # ---------------------------------------------
-            # Determine hidden dimension
-            # ---------------------------------------------
-
-            if name.startswith("mid_block"):
-
-                hidden_size = self.config.block_out_channels[-1]
-
-            elif name.startswith("up_blocks"):
-
-                block_id = int(name.split(".")[1])
-
-                hidden_size = list(
-                    reversed(self.config.block_out_channels)
-                )[block_id]
-
-            elif name.startswith("down_blocks"):
-
-                block_id = int(name.split(".")[1])
-
-                hidden_size = self.config.block_out_channels[
-                    block_id
-                ]
-
-            else:
-
-                raise ValueError(
-                    f"Unknown attention processor: {name}"
-                )
-
-            # ---------------------------------------------
-            # Self vs cross attention
-            # ---------------------------------------------
-
-            if name.endswith("attn1.processor"):
-
-                cross_attention_dim = None
-
-            else:
-
-                cross_attention_dim = (
-                    self.config.cross_attention_dim
-                )
-
-            # ---------------------------------------------
-            # PyTorch 2.x
-            # ---------------------------------------------
-
-            if hasattr(
-                torch.nn.functional,
-                "scaled_dot_product_attention",
-            ):
-
-                processor = LoRAAttnProcessor2_0(
-                    hidden_size=hidden_size,
-                    cross_attention_dim=cross_attention_dim,
-                    rank=rank,
-                    network_alpha=alpha,
-                )
-
-            else:
-
-                processor = LoRAAttnProcessor(
-                    hidden_size=hidden_size,
-                    cross_attention_dim=cross_attention_dim,
-                    rank=rank,
-                    network_alpha=alpha,
-                )
-
-            lora_attn_procs[name] = processor
-
-        self.set_attn_processor(lora_attn_procs)
-
-        # ---------------------------------------------
-        # Freeze EVERYTHING
-        # ---------------------------------------------
-
-        self.requires_grad_(False)
-
-        # ---------------------------------------------
-        # Enable LoRA parameters
-        # ---------------------------------------------
-
-        for module in self.modules():
-
-            if isinstance(
-                module,
-                (
-                    LoRAAttnProcessor,
-                    LoRAAttnProcessor2_0,
-                ),
-            ):
-
-                for param in module.parameters():
-
-                    param.requires_grad = True
-
-        # ---------------------------------------------
-        # Your custom projections remain trainable
-        # ---------------------------------------------
-
-        self.lr_projs.requires_grad_(True)
-        self.hr_projs.requires_grad_(True)
-
-        self._print_trainable_parameters()
-
-    def _print_trainable_parameters(self):
-
-        total = sum(
-            p.numel()
-            for p in self.parameters()
-        )
-
-        trainable = sum(
-            p.numel()
-            for p in self.parameters()
-            if p.requires_grad
-        )
-
-        print("=" * 60)
-        print("SatUNet")
-        print("=" * 60)
-
-        print(f"Total parameters:     {total:,}")
-        print(f"Trainable parameters: {trainable:,}")
-        print(
-            f"Trainable ratio:      "
-            f"{100.0 * trainable / total:.2f}%"
-        )
-
-        print("=" * 60)
-
-
     def forward(
         self,
         sample: torch.FloatTensor,
@@ -976,8 +814,6 @@ class SatUNet(ModelMixin, ConfigMixin, UNet2DConditionLoadersMixin):
 
         # return UNet2DConditionOutput(sample=sample)
         return sample
-
-
 
 
 # This architecture combines three conditioning types:

@@ -49,6 +49,23 @@ class SRDiffTrainer(Trainer):
             low_cpu_mem_usage=False,
         )
 
+        # --------------------------------------------------
+        # Freeze pretrained DiffusionSat U-Net + add LoRA
+        # --------------------------------------------------
+
+        self.denoise_net.add_lora(
+            rank=8,
+            alpha=8,
+        )
+
+        # With gradient checkpointing, some intermediate activations are not stored:
+        self.denoise_net.enable_gradient_checkpointing()
+
+        # tells the Diffusers model to process attention in smaller slices instead of 
+        # computing the whole attention operation at once.
+
+        self.denoise_net.set_attention_slice("auto")
+
         first_stage_config = {
             "embed_dim": 4,
             "double_z": True,
