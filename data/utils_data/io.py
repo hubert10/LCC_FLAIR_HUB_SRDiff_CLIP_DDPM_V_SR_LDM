@@ -6,7 +6,7 @@ DATA_DIR = "D:\kanyamahanga\Datasets"
 
 try:
     DATA_DIR = "/hubert_storage"
-    # DATA_DIR = "/my_data"
+    # DATA_DIR = "/hubert_storage"
 except Exception:
     DATA_DIR = "D:\kanyamahanga\Datasets"
 

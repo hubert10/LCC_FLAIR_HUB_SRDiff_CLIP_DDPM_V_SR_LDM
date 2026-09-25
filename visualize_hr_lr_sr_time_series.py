@@ -21,7 +21,7 @@ from utils.hparams import hparams, set_hparams
 
 try:
     DATA_DIR = os.environ["DATA_DIR"] + "/"
-    # DATA_DIR = "/my_data"
+    # DATA_DIR = "/hubert_storage"
 except Exception:
     DATA_DIR = "D:\kanyamahanga\Datasets"
 
