@@ -1053,11 +1053,11 @@ class LatentDiffusion(DDPM):
         z = self.get_first_stage_encoding(encoder_posterior).detach()
         # print("---------------------------z----------------------:", z.shape)
 
-        cond_lr = self.apply_cond_lr_encoder(img_lr, dates)
 
         with torch.no_grad():
             txt = self.get_learned_conditioning(txt)
             cond_hr = self.apply_cond_hr_encoder(img_hr)
+            cond_lr = self.apply_cond_lr_encoder(img_lr, dates)
 
         t = torch.randint(
             0, self.num_timesteps, (z.shape[0],), device=self.device
