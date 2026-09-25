@@ -614,13 +614,13 @@ class LatentDiffusion(DDPM):
         # self.first_stage_model.requires_grad_(False)
         # self.first_stage_model.encoder.conv_in.requires_grad_(True)
 
-        # self.cond_net.eval()
-        # # self.model.train = disabled_train
-        # for name, param in self.cond_net.named_parameters():
-        #     if "attn" not in name:
-        #         param.requires_grad = False
-        #     else:
-        #         param.requires_grad = False
+        self.cond_net.eval()
+        # self.model.train = disabled_train
+        for name, param in self.cond_net.named_parameters():
+            if "attn" not in name:
+                param.requires_grad = False
+            else:
+                param.requires_grad = False
 
         self.first_stage_model.eval()
         self.first_stage_model.train = disabled_train

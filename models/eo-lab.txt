@@ -10,3 +10,7 @@ scp -i /home/kanyamahanga/.ssh/Hubert-EoLab.pem eouser@74.63.0.58:/home/eouser/e
 
 
 sudo sshfs eouser@74.63.7.39:/hubert_storage /hubert_storage   -o _netdev,user,idmap=user,allow_other,default_permissions,uid=1000,gid=1000,IdentityFile=/home/eouser/.ssh/eolab_private,umask=000
+
+
+
+scp -r -i /home/kanyamahanga/.ssh/eolab_private /home/kanyamahanga/.ssh/eolab_private eouser@74.63.4.197:/home/eouser/.ssh/
