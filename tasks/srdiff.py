@@ -58,6 +58,10 @@ class SRDiffTrainer(Trainer):
             alpha=8,
         )
 
+        for name, p in self.denoise_net.named_parameters():
+            if p.requires_grad:
+                print(name, p.shape)
+
         # With gradient checkpointing, some intermediate activations are not stored:
         self.denoise_net.enable_gradient_checkpointing()
 
