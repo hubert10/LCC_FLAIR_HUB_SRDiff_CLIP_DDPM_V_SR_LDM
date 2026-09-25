@@ -401,14 +401,6 @@ class SRDiffTrainer(Trainer):
             dates=dates,
             closest_idx=closest_idx,
         )
-        print(
-            "---------------------img_lr training_step------------------------:",
-            img_lr.shape,
-        )
-        print(
-            "---------------------img_sr training_step------------------------:",
-            img_sr.shape,
-        )
 
         # for classification branches
         cls_sits, multi_outputs, aer_outputs = self.model(
