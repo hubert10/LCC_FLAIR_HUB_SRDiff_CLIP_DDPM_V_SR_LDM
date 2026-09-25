@@ -634,9 +634,9 @@ class LatentDiffusion(DDPM):
         # self.model.train = disabled_train
         for name, param in self.denoise_net.named_parameters():
             if "attn" not in name:
-                param.requires_grad = False
-            else:
                 param.requires_grad = True
+            else:
+                param.requires_grad = False
 
         # Setup the CLIP model - use pretrained weights
         self.cond_stage_model = FrozenOpenCLIPEmbedder(hparams)
